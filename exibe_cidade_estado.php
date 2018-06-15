@@ -1,26 +1,20 @@
 <?php
+	session_start();
 	include("cabecalho.php");
 	include ("conexao.php");
-	
 ?>
 	
-	<form method='POST' action='exibe_cidade_estado.php'/>
+<form method='POST' action='exibe_cidade_estado.php'/>
+		<label>Filtrar cidade/estado pelo nome que comece com:</label>
+		<input type="text" name="filtro"/>
 		
-			<label>Filtrar cidade/estado pelo nome que comece com:</label>
-			<input type="text" name="letra"/>
-			
-
-			<input type='submit' value='Filtro'/>
-			<input type='reset' value='Limpar'/>	
-			
-	</form>
-
-
-
+		<input type='submit' value='Filtro'/>
+		<input type='reset' value='Limpar'/>	
+</form>
 
 
 <form name="ordenar" method='POST' action='exibe_cidade_estado.php'>
-		<select name="ordenacao" onchange ="document.ordenar.submit()">
+		<select name="ordenacao_cidade_estado" onchange ="document.ordenar.submit()">
 				<option>.:Ordenar por:.</option>
 				<option value ="id_a_z">ID (A-Z)</option>
 				<option value ="id_z_a">ID (Z-A)</option>
@@ -29,51 +23,51 @@
 				<option value ="uf_a_z">UF(A-Z)</option>
 				<option value ="uf_z_a">UF(Z-A)</option>
 		</select>
-	
 </form>
 <?php
 
 		if(isset($_POST["filtro"])){
-			$select = "SELECT * FROM cidade_estado WHERE nome_cidade LIKE '$_POST[filtro] %'";
+			$condicao = " WHERE nome_cidade LIKE '$_POST[filtro] %'";
 			
 		}else{
-			$select = "SELECT * FROM cidade_estado";
+			$condicao = "";
 		}
-		session_start();
-		  if(isset($_POST["ordenacao"]) || isset($_SESSION["ordenacao"])){
-			  $_SESSION["ordenacao"] = $_POST["ordenacao"];
+		
+		  if(isset($_POST["ordenacao_cidade_estado"]) || isset($_SESSION["ordenacao_cidade_estado"])){
+			  $_SESSION["ordenacao_cidade_estado"] = $_POST["ordenacao_cidade_estado"];
 		  
 		  switch($_SESSION["ordenacao"]){
 			  case "id_a_z":
-					$select .= " ORDER BY id_cidade_estado";
+					$condicao .= " ORDER BY id_cidade_estado";
 					break;
 					
 			  case "id_z_a":
-					$select .= " ORDER BY id_cidade_estado DESC";
+					$condicao .= " ORDER BY id_cidade_estado DESC";
 			  break;
 			  
 			  
 			  case "nome_a_z":
-					$select .= " ORDER BY nome_cidade";
+					$condicao .= " ORDER BY nome_cidade";
 			  break;
 			  
 			  case "nome_z_a":
-					$select .= " ORDER BY nome_cidade DESC";
+					$condicao .= " ORDER BY nome_cidade DESC";
 			  break;
 			  
 			  
 			  case "uf_a_z":
-					$select .= " ORDER BY uf";
+					$condicao .= " ORDER BY uf";
 			  break;
 			  
 			  case "uf_z_a":
-					$select .= " ORDER BY uf DESC";
+					$condicao .= " ORDER BY uf DESC";
 			  break;
 			  
 			  
 			}
 		  }
-		
+		 
+		 $select = "SELECT * FROM cidade_estado $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "

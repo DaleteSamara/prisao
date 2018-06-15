@@ -2,10 +2,10 @@
 include ("conexao.php");
 include("cabecalho.php");
 ?>
-	<form method='POST' action='exibe_cidade_estado.php'/>
+	<form method='POST' action='exibe_prisao.php'/>
 		
 			<label>Filtrar pelo nome que comece com:</label>
-			<input type="text" name="letra"/>
+			<input type="text" name="filtro"/>
 			
 
 			<input type='submit' value='Filtro'/>
@@ -25,10 +25,10 @@ include("cabecalho.php");
 <?php
 
 		if(isset($_POST["filtro"])){
-			$select = "SELECT * FROM prisao WHERE nome_prisao LIKE '$_POST[filtro] %'";
+			$condicao = " WHERE nome_prisao LIKE '$_POST[filtro]%'";
 			
 		}else{
-			$select = "SELECT * FROM prisao";
+			$condicao = "";
 		}
 		session_start();
 		  if(isset($_POST["ordenacao_prisao"]) || isset($_SESSION["ordenacao_prisao"])){
@@ -36,20 +36,20 @@ include("cabecalho.php");
 		  
 		  switch($_SESSION["ordenacao_prisao"]){
 			  case "id_a_z":
-					$select .= " ORDER BY id_prisao";
+					$condicao .= " ORDER BY id_prisao";
 					break;
 					
 			  case "id_z_a":
-					$select .= " ORDER BY id_prisao DESC";
+					$condicao .= " ORDER BY id_prisao DESC";
 			  break;
 			  
 			  
 			  case "nome_a_z":
-					$select .= " ORDER BY nome_prisao";
+					$condicao .= " ORDER BY nome_prisao";
 			  break;
 			  
 			  case "nome_z_a":
-					$select .= " ORDER BY nome_prisao DESC";
+					$condicao .= " ORDER BY nome_prisao DESC";
 			  break;
 		
 			  
@@ -57,6 +57,7 @@ include("cabecalho.php");
 			}
 		  }
 		
+		 $select = "SELECT * FROM prisao $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include ("conexao.php");
 include("cabecalho.php");
 ?>
@@ -13,27 +14,28 @@ include("cabecalho.php");
 <?php
 
 		if(isset($_POST["filtro"])){
-			$select = "SELECT * FROM detento_prisao WHERE id_detento_prisao_prisao LIKE '$_POST[filtro] %'";
+			$condicao = " WHERE id_detento_prisao LIKE '$_POST[filtro]%'";
 			
 		}else{
-			$select = "SELECT * FROM detento_prisao";
+			$condicao = "";
 		}
-		session_start();
+		
 		  if(isset($_POST["ordenacao_detento_prisao"]) || isset($_SESSION["ordenacao_detento_prisao"])){
 			  $_SESSION["ordenacao_detento_prisao"] = $_POST["ordenacao_detento_prisao"];
 		  
 		  switch($_SESSION["ordenacao_detento_prisao"]){
 			  case "id_a_z":
-					$select .= " ORDER BY id_detento_prisao";
+					$condicao .= " ORDER BY id_detento_prisao";
 					break;
 					
 			  case "id_z_a":
-					$select .= " ORDER BY id_detento_prisao DESC";
+					$condicao .= " ORDER BY id_detento_prisao DESC";
 			  break;
 			  	  
 			}
 		  }
 		
+		 $select = "SELECT * FROM detento_prisao $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "

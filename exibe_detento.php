@@ -3,10 +3,10 @@ include ("conexao.php");
 include("cabecalho.php");
 ?>
 
-	<form method='POST' action='exibe_cidade_estado.php'/>
+	<form method='POST' action='exibe_detento.php'/>
 		
 			<label>Filtrar pelo nome que comece com:</label>
-			<input type="text" name="letra"/>
+			<input type="text" name="filtro"/>
 			
 
 			<input type='submit' value='Filtro'/>
@@ -15,7 +15,7 @@ include("cabecalho.php");
 	</form>
 
 <form name="ordenar" method='POST' action='exibe_detento.php'>
-		<select name="ordenacao_nova_nova" onchange ="document.ordenar.submit()">
+		<select name="ordenacao_detento" onchange ="document.ordenar.submit()">
 				<option>.:Ordenar por:.</option>
 				<option value ="id_a_z">ID (A-Z)</option>
 				<option value ="id_z_a">ID (Z-A)</option>
@@ -27,31 +27,31 @@ include("cabecalho.php");
 <?php
 
 		if(isset($_POST["filtro"])){
-			$select = "SELECT * FROM detento WHERE nome_detento LIKE '$_POST[filtro] %'";
+			$condicao = " WHERE nome_detento LIKE '$_POST[filtro] %'";
 			
 		}else{
-			$select = "SELECT * FROM detento";
+			$condicao = "";
 		}
 		session_start();
-		  if(isset($_POST["ordenacao_nova_nova"]) || isset($_SESSION["ordenacao_nova_nova"])){
-			  $_SESSION["ordenacao_nova_nova"] = $_POST["ordenacao_nova_nova"];
+		  if(isset($_POST["ordenacao_detento"]) || isset($_SESSION["ordenacao_detento"])){
+			  $_SESSION["ordenacao_detento"] = $_POST["ordenacao_detento"];
 		  
-		  switch($_SESSION["ordenacao_nova_nova"]){
+		  switch($_SESSION["ordenacao_detento"]){
 			  case "id_a_z":
-					$select .= " ORDER BY id_detento";
+					$condicao .= " ORDER BY id_detento";
 					break;
 					
 			  case "id_z_a":
-					$select .= " ORDER BY id_detento DESC";
+					$condicao .= " ORDER BY id_detento DESC";
 			  break;
 			  
 			  
 			  case "nome_a_z":
-					$select .= " ORDER BY nome_detento";
+					$condicao .= " ORDER BY nome_detento";
 			  break;
 			  
 			  case "nome_z_a":
-					$select .= " ORDER BY nome_detento DESC";
+					$condicao .= " ORDER BY nome_detento DESC";
 			  break;
 		
 			  
@@ -59,6 +59,7 @@ include("cabecalho.php");
 			}
 		  }
 		
+		 $select "SELECT * FROM detento $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "
@@ -82,7 +83,8 @@ include("cabecalho.php");
 				<td>$linha[cod_cidade_estado]</td>
 				<td class='c'>$linha[motivo]</td>
 				<td>$linha[foto]</td>			
-				<td class='c'><a href='remover_detento.php?id=$linha[id_detento]'>Remover</a>| <a href='alterar_detento.php?id=$linha[id_detento]'>Alterar</a></td>
+				<td class='c'><a href='remover_detento.php?id=$linha[id_detento]'>Remover</a>|
+				<a href='alterar_detento.php?id=$linha[id_detento]'>Alterar</a></td>
 			</tr>
 		";
 	}
