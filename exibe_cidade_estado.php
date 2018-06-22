@@ -4,7 +4,7 @@
 	include ("conexao.php");
 ?>
 	
-<form method='POST' action='exibe_cidade_estado.php'/>
+<form name="filtrar" method='POST' action='exibe_cidade_estado.php'/>
 		<label>Filtrar cidade/estado pelo nome que comece com:</label>
 		<input type="text" name="filtro"/>
 		
@@ -27,16 +27,16 @@
 <?php
 
 		if(isset($_POST["filtro"])){
-			$condicao = " WHERE nome_cidade LIKE '$_POST[filtro] %'";
-			
+			$condicao = " WHERE nome_cidade LIKE '$_POST[filtro]%'";
 		}else{
 			$condicao = "";
 		}
 		
 		  if(isset($_POST["ordenacao_cidade_estado"]) || isset($_SESSION["ordenacao_cidade_estado"])){
-			  $_SESSION["ordenacao_cidade_estado"] = $_POST["ordenacao_cidade_estado"];
-		  
-		  switch($_SESSION["ordenacao"]){
+			  if($_POST["ordenacao_cidade_estado"]){
+				$_SESSION["ordenacao_cidade_estado"] = $_POST["ordenacao_cidade_estado"];
+			  }
+		  switch($_SESSION["ordenacao_cidade_estado"]){
 			  case "id_a_z":
 					$condicao .= " ORDER BY id_cidade_estado";
 					break;
@@ -85,7 +85,8 @@
 				<td class='c'>$linha[Id_cidade_estado]</td>
 				<td>$linha[nome_cidade]</td>
 				<td class='c'>$linha[uf]</td>
-				<td><a href='remover_cidade_estado.php?id=$linha[Id_cidade_estado]'>Remover</a>| <a href='alterar_cidade_estado.php?id=$linha[Id_cidade_estado]'>Alterar</a></td>
+				<td><a href='remover_cidade_estado.php?id=$linha[Id_cidade_estado]'>Remover</a>|
+				<a href='alterar_cidade_estado.php?id=$linha[Id_cidade_estado]'>Alterar</a></td>
 			</tr>
 		";
 	  }

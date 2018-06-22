@@ -1,6 +1,7 @@
 <?php
-include ("conexao.php");
-include("cabecalho.php");
+	session_start();
+	include ("conexao.php");
+	include("cabecalho.php");
 ?>
 
 	<form method='POST' action='exibe_detento.php'/>
@@ -27,15 +28,17 @@ include("cabecalho.php");
 <?php
 
 		if(isset($_POST["filtro"])){
-			$condicao = " WHERE nome_detento LIKE '$_POST[filtro] %'";
+			$condicao = " WHERE nome_detento LIKE '$_POST[filtro]%'";
 			
 		}else{
 			$condicao = "";
 		}
-		session_start();
+		
 		  if(isset($_POST["ordenacao_detento"]) || isset($_SESSION["ordenacao_detento"])){
-			  $_SESSION["ordenacao_detento"] = $_POST["ordenacao_detento"];
-		  
+			  if($_POST["ordenacao_detento"]){
+				$_SESSION["ordenacao_detento"] = $_POST["ordenacao_detento"];
+			  }
+			  
 		  switch($_SESSION["ordenacao_detento"]){
 			  case "id_a_z":
 					$condicao .= " ORDER BY id_detento";
@@ -59,7 +62,7 @@ include("cabecalho.php");
 			}
 		  }
 		
-		 $select "SELECT * FROM detento $condicao";
+		 $select = "SELECT * FROM detento $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "

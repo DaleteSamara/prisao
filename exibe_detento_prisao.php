@@ -1,7 +1,7 @@
 <?php
-session_start();
-include ("conexao.php");
-include("cabecalho.php");
+	session_start();
+	include ("conexao.php");
+	include("cabecalho.php");
 ?>
 <form name="ordenar" method='POST' action='exibe_detento_prisao.php'>
 		<select name="ordenacao_detento_prisao" onchange ="document.ordenar.submit()">
@@ -21,8 +21,10 @@ include("cabecalho.php");
 		}
 		
 		  if(isset($_POST["ordenacao_detento_prisao"]) || isset($_SESSION["ordenacao_detento_prisao"])){
-			  $_SESSION["ordenacao_detento_prisao"] = $_POST["ordenacao_detento_prisao"];
-		  
+			  if($_POST["ordenacao_detento_prisao"]){
+				$_SESSION["ordenacao_detento_prisao"] = $_POST["ordenacao_detento_prisao"];
+			  }
+			  
 		  switch($_SESSION["ordenacao_detento_prisao"]){
 			  case "id_a_z":
 					$condicao .= " ORDER BY id_detento_prisao";

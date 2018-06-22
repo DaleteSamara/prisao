@@ -1,6 +1,7 @@
 <?php
-include ("conexao.php");
-include("cabecalho.php");
+	session_start();
+	include ("conexao.php");
+	include("cabecalho.php");
 ?>
 	<form method='POST' action='exibe_prisao.php'/>
 		
@@ -32,8 +33,10 @@ include("cabecalho.php");
 		}
 		session_start();
 		  if(isset($_POST["ordenacao_prisao"]) || isset($_SESSION["ordenacao_prisao"])){
-			  $_SESSION["ordenacao_prisao"] = $_POST["ordenacao_prisao"];
-		  
+			  if($_POST["ordenacao_prisao"]){
+				$_SESSION["ordenacao_prisao"] = $_POST["ordenacao_prisao"];
+			  }
+			  
 		  switch($_SESSION["ordenacao_prisao"]){
 			  case "id_a_z":
 					$condicao .= " ORDER BY id_prisao";
@@ -57,7 +60,7 @@ include("cabecalho.php");
 			}
 		  }
 		
-		 $select = "SELECT * FROM prisao $condicao";
+		 $select = "SELECT * FROM view_prisao $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "
@@ -74,7 +77,7 @@ include("cabecalho.php");
 			<tr>
 				<td class='c'>$linha[id_prisao]</td>
 				<td>$linha[nome_prisao]</td>
-				<td class='c'>$linha[cod_cidade_estado]</td>				
+				<td class='c'>$linha[nome_cidade]/$linha[uf]</td>				
 				<td><a href='remover_prisao.php?id=$linha[id_prisao]'>Remover</a>| 
 				<a href='alterar_prisao.php?id=$linha[id_prisao]'>Alterar</a></td>
 			</tr>
