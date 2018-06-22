@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include ("conexao.php");
-	include("cabecalho.php");
+	include("cabecalho_tabelas.php");
 ?>
 
 	<form method='POST' action='exibe_detento.php'/>
@@ -62,7 +62,7 @@
 			}
 		  }
 		
-		 $select = "SELECT * FROM detento $condicao";
+		 $select = "SELECT * FROM view_detento $condicao";
 		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "
@@ -83,7 +83,7 @@
 				<td class='c'>$linha[id_detento]</td>
 				<td>$linha[nome_detento]</td>
 				<td class='c'>$linha[idade]</td>
-				<td>$linha[cod_cidade_estado]</td>
+				<td>$linha[nome_cidade]/$linha[uf]</td>
 				<td class='c'>$linha[motivo]</td>
 				<td>$linha[foto]</td>			
 				<td class='c'><a href='remover_detento.php?id=$linha[id_detento]'>Remover</a>|

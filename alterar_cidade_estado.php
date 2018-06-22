@@ -1,5 +1,7 @@
 <?php
 	include ("conexao.php");
+	include("cabecalho_tabelas.php");
+	
 	$sql = "SELECT * FROM cidade_estado WHERE Id_cidade_estado=".$_GET["id"];
 	
 	$resultado = mysqli_query($link, $sql) or die(mysqli_error($link));
@@ -11,6 +13,7 @@
 
 	
 <form method="POST" action="alterando_cidade_estado.php">
+	<br/><br/><br/>
 	<label>Nome Cidade:</label>
 	<input type="text" name="nome_cidade" value="<?=$linha["nome_cidade"]?>"/>
 

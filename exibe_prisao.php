@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include ("conexao.php");
-	include("cabecalho.php");
+	include("cabecalho_tabelas.php");
 ?>
 	<form method='POST' action='exibe_prisao.php'/>
 		
@@ -31,37 +31,33 @@
 		}else{
 			$condicao = "";
 		}
-		session_start();
-		  if(isset($_POST["ordenacao_prisao"]) || isset($_SESSION["ordenacao_prisao"])){
-			  if($_POST["ordenacao_prisao"]){
+		
+		if(isset($_POST["ordenacao_prisao"]) || isset($_SESSION["ordenacao_prisao"])){
+			if($_POST["ordenacao_prisao"]){
 				$_SESSION["ordenacao_prisao"] = $_POST["ordenacao_prisao"];
-			  }
-			  
-		  switch($_SESSION["ordenacao_prisao"]){
-			  case "id_a_z":
-					$condicao .= " ORDER BY id_prisao";
-					break;
-					
-			  case "id_z_a":
-					$condicao .= " ORDER BY id_prisao DESC";
-			  break;
-			  
-			  
-			  case "nome_a_z":
-					$condicao .= " ORDER BY nome_prisao";
-			  break;
-			  
-			  case "nome_z_a":
-					$condicao .= " ORDER BY nome_prisao DESC";
-			  break;
-		
-			  
-			  
 			}
-		  }
+			
+			switch($_SESSION["ordenacao_prisao"]){
+				case "id_a_z":
+					$condicao .= " ORDER BY id_prisao";
+				break;
+					
+				case "id_z_a":
+					$condicao .= " ORDER BY id_prisao DESC";
+				break;
+			
+				case "nome_a_z":
+					$condicao .= " ORDER BY nome_prisao";
+				break;
+			  
+				case "nome_z_a":
+					$condicao .= " ORDER BY nome_prisao DESC";
+				break;
+			}
+		}
 		
-		 $select = "SELECT * FROM view_prisao $condicao";
-		 $resultado = mysqli_query($link, $select) or die(mysqli_error($link));
+		$select = "SELECT * FROM view_prisao $condicao";
+		$resultado = mysqli_query($link, $select) or die(mysqli_error($link));
 		
 	echo "
 		<table border='1'>

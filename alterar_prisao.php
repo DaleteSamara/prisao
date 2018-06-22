@@ -9,7 +9,8 @@
 <html>
     
 		<form method="POST" action="alterando_prisao.php">
-          <div>		
+          <div>
+			<br/><br/><br/>	
 			<label>Nome Prisao:</label>
 			<input type="text" name="nome_prisao" value ="<?=$linha["nome_prisao"]?>"><br/>
 			

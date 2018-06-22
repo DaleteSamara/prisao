@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include("cabecalho.php");
+	include("cabecalho_tabelas.php");
 	include ("conexao.php");
 ?>
 	
